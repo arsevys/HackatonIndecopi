@@ -1,0 +1,8 @@
+{
+	"host":"localhost",
+	"user":"postgres",
+	"database":"HackatonIndecopi",
+	"port":"5432",
+	"password":"javier"
+
+}
