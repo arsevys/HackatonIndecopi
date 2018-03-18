@@ -31,27 +31,275 @@
         line-height: 30px;
         padding-left: 10px;
       }
+      #floating-panel1 {
+        position: absolute;
+        top: 50px;
+        left: 73%;
+        z-index: 5;
+        background-color: rgba(255,255,255,0.8);
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+      .zui-table {
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+}
+.zui-table thead th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+}
+.zui-table tbody td {
+    border: solid 1px #DDEEEE;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+}
     </style>
   </head>
   <body>
     <div id="floating-panel">
       <img src="/img/logo.png" width="250px" height="80px"><br>
-     <span>Sunat</span>
-      <input id="address" type="textbox" value="LUIS N SAENZ NRO. 360 (DPTO. 102) LIMA - LIMA - JESUS MARIA">
-      <input id="consulta" type="button" value="Consultar" >
-      <br>
+     <span>Ruc :</span>
+      <input id="address" type="textbox" value="LUIS N SAENZ NRO. 360 LIMA - JESUS MARIA">
+      <input id="consulta" type="button" value="Consultar"><br>
+   
       <span>Distrito</span>
       <select>
         <option>Lince</option>
         <option>San Juan de Miraflores</option>
       </select>
     </div>
+
+
+
+     <div id="floating-panel1" style="display: none;">
+      <img id="imgLog" src="/img/logo.png" width="290px" height="100px">
+     <center><span id="nom">Sunat</span></center>
+      <span id="dire">Av Chalacos</span>
+      <center>
+      <table class="zui-table">
+        <thead><tr><th>Motivo        </th><th>UIT</th></tr>
+
+        </thead>
+        <tbody id="cuerpoTabla">
+          
+          
+        </tbody>
+      </table></center>
+    </div>
+
+
+
+
+
     <div id="map"></div>
     <script>
+var datos={
+        "20522291201":  {  
+        "nombre":"Financiera OH!",
+        "url":"./img/financieraoh.png",
+        "dire":"AV. AVIACION  2405  LIMA - LIMA - SAN BORJA",
+        "color":2,
+        "sanciones":[
+        {"uit":1.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":5,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}]
+             },
+
+         "20498280553": {
+         "nombre": "COOPERATIVA DE AHORRO Y CREDITO DEL PERU LTDA",
+         "url":"./img/logo.png",
+         "color":1,
+         "dire": "MARISCAL RAMON CASTILLA  758   LIMA - MAGDALENA DEL MAR",
+         "sanciones":[
+         {"uit":5,"motivo":"FALTA DE IDONEIDAD"},{"uit":3,"motivo":"LIBRO DE RECLAMACIONES - OTROS"},
+         {"uit":2.6,"motivo":"FALTA DE IDONEIDAD"},{"uit":5,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}]},
+
+         "20514226432": {
+         "nombre": "Q´ALLPA PROMOTORES INMOBILIARIOS S.A.C."   ,
+         "url":"./img/edificio.png",
+         "color":2,
+         "dire": "MQUEZ DE BULA LIMA - LIMA - CHORRILLOS",
+         "sanciones":[
+         {"uit":1.5,"motivo":""},{"uit":5, "motivo": ""}]
+         } ,
+
+         "20207338029":{"color":2,
+            "nombre": "SOCIEDAD DE BENEFICENCIA PUBLICA HVCA",
+            "url":"./img/IMG_9770",
+            "dire": "PZA.BOLOGNESI  CERCADO HUANCAVELICA - HUANCAVELICA - HUANCAVELICA",
+            "sanciones" : [
+            {"uit":4.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":2,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}]
+            },
+         "20100047218":{"color":0,
+        "nombre": "BANCO DE CREDITO DEL PERU S.A.",
+        "url":"./img/BCP.png",
+        "dire": "CENTENARIO NRO. 156 URB. LAS LADERAS DE MELGAREJO LIMA - LIMA - LA MOLINA",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}]
+        } ,
+         "20522291201":{"color":1,
+          "nombre": "FINANCIERA OH! S.A.",
+          "url":"./img/FIN-OH.jpg",
+          "dire": "AV. AVIACION  2405  LIMA - LIMA - SAN BORJA",
+          "sanciones" :[
+          {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+          ]} ,
+          "20517224422":{"color":2,
+          "nombre": "CONSTRUCTORA E INMOBILIARIA QUIFAR S.A.C",
+          "url":"./img/mostrar_logo.jpg",
+          "dire": "BOLIVAR NRO. 332    LIMA - MIRAFLORES",
+          "sanciones" :[
+          {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+          ]} ,
+          "20100269466":{"color":2,
+          "nombre": "CAJA MUNICIPAL DE CREDITO POPULAR DE LIMA S.A.",
+          "url":"./img/caja-litana.jpg",
+          "dire": "AV. NICOLAS DE PIEROLA  1785 - LIMA",
+          "sanciones" :[
+          {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+          ]}  ,
+            "20514446980":{"color":2,
+            "nombre": "TALLER DE SERVICIOS MECANICOS LUSAN GNV S.A.C - LUSAN GNV S.A.C",
+            "url":"./img/taller.jpg",
+            "dire": "JR. GARCIA Y GRACIA  747  LIMA - BARRANCO",
+            "sanciones" :[
+            {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+            ]}  ,
+              "20475522657":{"color":0,
+            "nombre": "PERU RENT A CAR & OTHER SERVICES S.A.C.",
+            "url":"./img/ss-versa.jpg",
+            "dire": "LAS COLINAS NRO. 110  LIMA - SANTIAGO DE SURCO",
+            "sanciones" :[
+            {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+            ]},
+            "20100055237":{"color":2,
+            "nombre": "ALICORP S.A.A.",
+            "url":"./img/alicorp.jpg",
+            "dire": "AV. ARGENTINA  4793  - CARMEN DE LA LEGUA REYNOSO",
+            "sanciones" :[
+            {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+            ]} ,
+              "20220013708":{"color":0,
+            "nombre": "INVERSIONES PALOMAR S.A",
+            "url":"./img/alicorp.jpg",
+            "dire": "AV. JAVIER PRADO OESTE  757  LIMA - MAGDALENA DEL MAR",
+            "sanciones" :[
+            {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+            ]} ,
+            "20479649970":{"color":2,
+            "nombre": "CONSORCIO EMPRESARIAL DAVID CORNEJO CHINGUEL SOCIEDAD COMERCIAL DE RESPONSABILIDAD LIMITADA",
+            "url":"./img/consorcio.jpg",
+            "dire": "SAN JOSE NRO. 285  - CHICLAYO - CHICLAYO",
+            "sanciones" :[
+            {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+            ]}  ,
+             "20258886420":{"color":1,
+            "nombre": "ROSEN PERU S.A.",
+            "url":"./img/rosen.jpg",
+            "dire": "AV. EL SOL AGROPEC.VILLA RICA LIMA - LIMA - VILLA EL SALVADOR",
+            "sanciones" :[
+            {"uit":1.5,"motivo":""},{"uit":5, "motivo": ""}
+            ]} ,
+                "20454522983":{"color":2,
+              "nombre": "COOPERATIVA DE SERVICIOS MULTIPLES MULTISERVISUR",
+              "url":"./img/descarga.jpg",
+              "dire": "AV. GOYENECHE  305  AREQUIPA",
+              "sanciones" :[
+              {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+              ]},
+          "20108568098":{"color":2,
+        "nombre": "SOCIEDAD DE BENEFICENCIA DE LIMA METROPOLITANA",
+        "url":"./img/logobn.jpg",
+        "dire": "GERVASIO SANTILLANA  260 LIMA - LIMA - MIRAFLORES",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]},
+          "20492204057":{"color":2,
+        "nombre": "NOVOAUTOS S.A.",
+        "url":"./img/novoautos.jpg",
+        "dire": "AV. COLONIAL NRO. 398 LIMA - LIMA - LIMA",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]},
+          "20100053455":{"color":1,
+        "nombre": "BANCO INTERNACIONAL DEL PERÚ S.A.A - INTERBANK",
+        "url":"./img/interbank.jpg",
+        "dire": "AV. CARLOS VILLARAN NRO. 140  LIMA - LIMA - LA VICTORIA",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]},
+          "20100041953":{"color":1,
+        "nombre": "RÍMAC SEGUROS Y REASEGUROS S.A.",
+        "url":"./img/seguro.jpg",
+        "dire": "AV. PASEO DE LA REPUBLICA  3505  LIMA - SAN ISIDRO",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]},
+          "20510896344":{"color":2,
+        "nombre": "SYNTHES PERU S.A.C",
+        "url":"./img/Synthes.png",
+        "dire": "AV. CANAVAL Y MOREYRA NRO. 480  LIMA  - SAN ISIDRO",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]},
+        "20100072247":{"color":1,
+        "nombre": "ASOCIACION EDITORIAL BRUÑO",
+        "url":"./img/bruno.jpg",
+        "dire": "AV. ARICA  751 LIMA  - BREÑA",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]},
+          
+        "20130098488":{"color":2,
+        "nombre": "CAJA MUNICIPAL DE AHORRO Y CRÉDITO DE TACNA S.A.",
+        "url":"./img/tacna.jpg",
+        "dire": "FRANCISCO LAZO 297  TACNA - TACNA",
+        "sanciones" :[
+       {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]},
+          "20544466675":{"color":2,
+        "nombre": "AUTO & PERFORMANCE S.A.C",
+        "url":"./img/descarga.jpg",
+        "dire": "AV. DEFENSORES DEL MORRO  1661    LIMA - CHORRILLOS",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]},
+        "20501426041":{"color":1,
+        "nombre": "SERVICIOS MULTIMEDIA S.A.C.",
+        "url":"./img/servicios.jpg",
+        "dire": "AV. PASEO DE LA REPUBLICA  3755 LIMA - SAN ISIDRO",
+        "sanciones" :[
+        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        ]}
+
+    }  
+
+function consultad(x){
+          console.log(x);
+       $("#floating-panel1").css({"display":"block"})   
+       $("#imgLog").attr("src",x.url);
+       $("#nom").text(x.nombre);
+       $("#dire").text(x.dire);
+      var p=""
+       for(let i=0;x.sanciones.length>i;i++){
+      p+=`<tr><td>${x.sanciones[i].motivo}</td><td>${x.sanciones[i].uit}</td></tr>`;
+       }
+       $("#cuerpoTabla").html(p);
+
+    }
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 8,
-          center: {lat: -12.032153654465615, lng: -77.04776401179845}
+          zoom: 12,
+          center: {lat: -12.0703193, lng:-77.0275222}
         });
         
 
@@ -78,19 +326,10 @@
             lat:parseFloat(data[i].lat),
             lng:parseFloat(data[i].lng)
           }
-           GMarker.pintar(t,x)
+           GMarker.pintar(t,x,data[i].prorz,data[i].dniruc)
           }
         
-          // geocoder.geocode({'address': data[i].direc}, function(results, status) {
-          // if (status === 'OK') {
-          
-          //   //resultsMap.setCenter(results[0].geometry.location);
-           
-           
-          // } else {
-          //   console.log('No se encontro ningun resultado: ' + data[i].direc);
-        //  }
-        // });
+        
 
          
     }

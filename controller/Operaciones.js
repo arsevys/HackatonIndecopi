@@ -193,10 +193,10 @@ var oi=[
   ];
 
 
-  for(let i=0;oi.length>i;i++){
-   console.log(oi[i].ruc,oi[i].direccion)
-	Sanciones.actualisarTodo(oi[i].long,oi[i].lat,oi[i].ruc)
-}
+//   for(let i=0;oi.length>i;i++){
+//    console.log(oi[i].ruc,oi[i].direccion)
+// 	Sanciones.actualisarTodo(oi[i].long,oi[i].lat,oi[i].ruc)
+// }
 Sanciones.cargarSunatRucTodo((err,data)=>{
 
 console.log(err,data)
