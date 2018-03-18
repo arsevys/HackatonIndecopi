@@ -14,7 +14,9 @@ app.use(express.static(path.join(__dirname,"public")));
 app.get("/",function(req,res){
 	res.render("index.html");
 })
-
+app.get("/mapa",function(req,res){
+	res.render("indexp.html");
+})
 app.post("/consulta",Operaciones.consultaTodoRuc);
 
 app.listen(3000,()=>{

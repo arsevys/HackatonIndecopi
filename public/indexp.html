@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geocoding service</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 50px;
+        left: 2%;
+        z-index: 5;
+        background-color: rgba(255,255,255,0.8);
+        padding: 5px;
+        border: 1px solid #999;
+       
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="floating-panel">
+     <center> <img src="/img/logo.png" width="250px" height="80px"></center>
+      <center><span id="nom">Distrito</span><br>
+      <span id="dir">Direccion</span> </center>
+      <div id="ho">
+        
+      </div><center>
+      <span id="tele"></span><br>
+      <span id="anexo"></span><br>
+      </center>
+    </div>
+    <div id="map"></div>
+
+    <script>
+   function llenar(x){
+    console.log(x);
+     document.getElementById("nom").innerText=x["nombre"];
+     document.getElementById("dir").innerText=x.Direccion;
+     // document.getElementById("nom").innerText=x.nombre;
+      var p="<ul>"
+       for(let i=0;x.Horario.length>i;i++){
+      p+=`<li style="width:auto;padding:0">- ${x.Horario[i]}</li>`;
+       }
+       document.getElementById("ho").innerHTML=p +"</ul>";
+       if(x.Telefono){
+        document.getElementById("tele").innerText="Telefono :"+x.Telefono[0].numeros[0];
+        document.getElementById("anexo").innerText="Anexo : "+x.Telefono[0].anexo;
+       }
+   }
+
+
+      var direcciones = [
+        {
+          nombre :"GAMARRA",
+          cordenadas:[-12.0696527,-77.0150632]
+        },
+        {
+          nombre :"LIMA NORTE",
+          cordenadas:[-11.9913886,-77.0746132]
+        },
+        {
+          nombre :"AEROPUERTO INTERNACIONAL JORGE CHÁVEZ",
+          cordenadas:[-12.0242576,-77.1132302]
+        },
+        {
+          nombre :"MAC CALLAO",
+          cordenadas:[-12.0567577,-76.9710531]
+        },
+        {
+          nombre :"MAC Lima Este",
+          cordenadas:[-12.0412631,-77.0057233]
+        },
+        {
+          nombre :"MAC LIMA NORTE",
+          cordenadas:[-12.0057619,-77.060115]
+        },
+        {
+          nombre :"MAC Ventanilla",
+          cordenadas:[-11.8763998,-77.129873]
+        },
+        {
+          nombre :"Congreso de la República",
+          cordenadas:[-12.0475575,-77.0270535]
+        },
+        {
+          nombre :"SEDE CENTRAL LIMA SUR",
+          cordenadas:[-12.0860543,-77.0080174]
+        },
+        {
+          nombre :"AMAZONAS",
+          cordenadas:[-6.2290733,-77.8735995]
+        },
+        {
+          nombre :"ANCASH SEDE HUARAZ",
+          cordenadas:[-9.5291097,-77.5268852]
+        },
+        {
+          nombre :"ANCASH SEDE CHIMBOTE",
+          cordenadas:[-9.077336,-78.5928518]
+        },
+        {
+          nombre :"APURIMAC",
+          cordenadas:[-13.6342279,-72.8763299]
+        },
+        {
+          nombre :"AREQUIPA",
+          cordenadas:[-16.4187247,-71.5284867]
+        },
+        {
+          nombre :"AYACUCHO",
+          cordenadas:[-13.1566976,-74.2311135]
+        },
+        {
+          nombre :"CAJAMARCA",
+          cordenadas:[-7.1583564,-78.5159062]
+        },
+        {
+          nombre :"CUSCO",
+          cordenadas:[-13.5226678,-71.9656946]
+        },
+        {
+          nombre :"CUSCO AEROPUERTO INTERNACIONAL ALEJANDRO VELAZCO ASTETE",
+          cordenadas:[-13.5376364,-71.945803]
+        },
+        {
+          nombre :"HUANCAVELICA",
+          cordenadas:[-12.7889564,-74.9758403]
+        },
+        {
+          nombre :"HUANUCO",
+          cordenadas:[-9.9300891,-76.2373771]
+        },
+        {
+          nombre :"ICA",
+          cordenadas:[-14.0742577,-75.726722]
+        },
+        {
+          nombre :"JUNIN SEDE HUANCAYO",
+          cordenadas:[-12.0555583,-75.2174713]
+        },
+        {
+          nombre :"JUNIN SEDE LA MERCED",
+          cordenadas:[-11.0566394,-75.335091]
+        },
+        {
+          nombre :"LA LIBERTAD",
+          cordenadas:[-8.1190746,-79.0385492]
+        },
+        {
+          nombre :"LAMBAYEQUE",
+          cordenadas:[-6.7801433,-79.8391614]
+        },
+        {
+          nombre :"LORETO",
+          cordenadas:[-3.7483591,-73.2464882]
+        },
+        {
+          nombre :"MADRE DE DIOS",
+          cordenadas:[-12.5934416,-69.1844138]
+        },
+        {
+          nombre :"MOQUEGUA",
+          cordenadas:[-17.6441395,-71.3440258]
+        },
+        {
+          nombre :"PASCO",
+          cordenadas:[-10.6650453,-76.2539523]
+        },
+        {
+          nombre :"PIURA",
+          cordenadas:[-5.1939525,-80.6345747]
+        },
+        {
+          nombre :"PIURA MAC",
+          cordenadas:[-5.1853567,-80.6436122]
+        },
+        {
+          nombre :"PUNO",
+          cordenadas:[-15.8415918,-70.0308708]
+        },
+        {
+          nombre :"SAN MARTIN",
+          cordenadas:[-6.490404,-76.362173]
+        },
+        {
+          nombre :"TACNA",
+          cordenadas:[-18.0150714,-70.2531915]
+        },
+        {
+          nombre :"TUMBES",
+          cordenadas:[-3.5695431,-80.4579064]
+        },
+        {
+          nombre :"UCAYALI",
+          cordenadas:[-8.3785722,-74.5375928]
+        },
+        {
+          nombre :"VRAEM",
+          cordenadas:[-12.5182122,-73.8304268]
+        }
+      ];
+      
+      var dir=[
+  // {    "nombre":"AeroPuerto",
+  //       "Direccion":"av.Elmer Faucett s/n",
+  //       "telofonos":[{"anexo":3201,"numeros":[517-1835,2247800]}],
+  //       "horario":[{
+  //     tipo:"publico",
+  //     tiempo:"L-V 24 horas(inclusive feriados)"
+  //     }, {tipo: "mesa de partes", 
+  //     tiempo: "L-V de 8:30 a 16:30h."}],
+  //     "cor":[-12.0696527,-77.0150632]
+        
+  //   },
+    
+  {
+    "nombre":"Gamarra",
+    "Direccion": "av.Prolongacion Huanuco 2108, La victoria",
+    "Telefono": [{"anexo":3301, "numeros": [323-3944,2247800]}],
+    "Horario": ["L-V 08:30 a 16:30h."],
+    "cor":[-11.9913886,-77.0746132]
+    
+    } ,
+    
+   {
+    "nombre":"Lima Norte",
+    "Direccion": "av.Carlos izaguirre N-988 Los Olivos.",
+    "Horario": [ "L-V 8:30 a 16:30h."],
+       "cor":[-12.0242576,-77.1132302]
+    
+    }
+    ,
+  { "nombre":"Mac Callao",
+      
+    "Direccion": "Av.Oscar R.Benavides 3866 Bellavista-Callao",
+    "Telefono": [{"anexo": 409, "numeros": [7480330, 7480331, 7480332]}],
+    "Horario": ["Lunes a viernes:  08:00 a.m a 08:00 p.m",
+                 "Sabados: 08:00 a.m a 04:00 p.m",
+           "Domingos y feriados: 09:00 a.m a 01:00 p.m" ],
+     "cor":[-12.0567577,-76.9710531] 
+      
+    },
+    
+   { "nombre":"mac Lima este",
+    
+    "Direccion": "CC.Agustino plaza av.ancash 2151, El agustino",
+    "Telefono": [{"anexo": 1106, "numeros": [5004740]}],
+    "Horario": [ "Lunes a viernes: 08:00 a.m a 08:00 p.m",
+                  "Sabados: 08:00 a.m a 04:00 p.m",
+           "Domingos y feriados:  09:00 a.m a 01:00 p.m" ],
+    "cor":[-12.040997,-77.003479]
+    
+    },
+  { "nombre": "mac Lima norte",
+     
+     
+    "Direccion": "CC Plaza Norte av.tomas valle cruce  con panamericana Norte",
+    "Telefono": [{"numero": [985187019]}],
+    "Horario": [ "Lunes a viernes: 08:00 a.m a 08:00 p.m",
+                 "Sabados: 08:00 a.m a 04:00 p.m",
+           "Domingos y feriados:  09:00 a.m a 01:00 p.m"],
+    "cor":[-12.005902,-77.059286]      
+           
+     }
+   
+     , { "nombre": "mac ventanilla",
+  
+  "Direccion": "cuadras 6 y 7, Calle las gaviotas mza. C10, ventanilla",
+    "Telefono": [{"anexo": 738, "numeros": [6311400]}],
+    "Horario": [ "Lunes a viernes: 08:00 a.m a 08:00 p.m",
+                 "Sabados:  08:00 a.m a 04:00 p.m",
+           "  Domingos y feriados: 09:00 a.m a 01:00 p.m" ],
+      "cor":[-11.8763998,-77.129873]
+      
+      
+      }
+      ,
+  { "nombre": "Plataforma de atencion al consumidor",
+      
+      
+  "Direccion": "Plaza jose faustino sanchez carrion  Cercado de lima",
+    "Telefono": [{"anexo": 3210, "numeros": [311-7777]}],
+    "horario":[
+   
+    "L-V de 09:00 a 13:00 y de 14h00 a 17h00",
+    
+   "L-V de 09:00 a 17:00"],
+    
+    "cor":[-12.0057619,-77.060115]
+    } 
+    
+    , { "nombre":"Sede central Lima Sur",
+    
+    
+  "Direccion": "Calle prosa 104 San borja",
+  "Telefono": [{"numeros": [224-7800, 224-7777]}],
+  "Horario": [ "Lunes a viernes: 08:30 a 16:30h",
+             "L-V 08:30 a.m a 17:30h"],
+  "cor":[-12.085954, -77.007742]      
+        
+          
+  }
+  ,
+   { "nombre":"Amazonas",
+    
+  "Direccion": "Jr.ayacucho 1073 -Chachapoyas",
+  "telefono": [{"numeros": [01-2247777]}],
+  "Horario": ["Lunes a viernes:  08:30 a 16:30h"],
+  "cor":[-12.0475575,-77.0270535]         
+  
+  }
+  
+  ,{ "nombre":"Sede Huaraz",
+    
+  "Direccion": "Av.agustin Gamarra N-671, Huaraz",
+  "Telefono": [{"numeros": [01-2247777]}],
+  "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+  "cor":[-12.0860543,-77.0080174] 
+  
+  }
+  
+  ,
+   { "nombre":"Sede Chimbote",
+  
+  "Direccion": "Jr.Elias Aguirre N-130, chimbote",
+  "Telefono": [{"numeros": [01-2247777]}],
+  "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+  "cor":[-9.5291097,-77.5268852]
+  }
+  ,
+  
+   { "nombre":"Apurimac",
+  
+  "Direccion": "Av.Andres avelino caceres N-211, Abancay",
+  "Telefono": [{"numeros": [01-2247777]}],
+  "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+  "cor":[-6.2290733,-77.8735995]
+  },
+  
+  { "nombre": "Arequipa",
+    
+    "Direccion": "Mz. O Lt. 20 - Urbanización La Esperanza, Distrito de José Luis Bustamante",
+    "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": ["Lunes a viernes 08:30 a 16:30h"],
+    "cor":[-16.4187247,-71.5284867]
+  },
+  
+ { "nombre": "Ayacucho",
+    
+    "Direccion": "Av. Mariscal Cáceres N° 1387, Ayacucho",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-13.156715, -74.228986]
+    
+    },
+    
+  { "nombre":"Cajamarca",
+    
+    "Direccion": "Jr. Amazonas Nº 785",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": ["Lunes a viernes:  08:30 a 16:30h"],
+    "cor":[-7.157245, -78.515273]
+    
+  },
+  
+  { "nombre":"Cusco",
+    
+    "Direccion": "Urbanización Constancia Mz. A-11-2, Wanchaq.",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-13.5226678,-71.9656946]
+    }
+    
+  ,{ "nombre":"Aeropuerto cusco",
+    "Direccion": "Aeropuerto Internacional Alejandro Velazco Astete S/N Int. 2 Piso",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ " Lunes a viernes: L-V 07:30 a 13:00 y 2:15 a 16:30 h"],
+    "cor":[-13.5376364,-71.945803]
+  }
+  
+  ,{ "nombre":"Huancavelica",
+    "Direccion": "Jr. Torre Tagle Nº 133 - Huancavelica",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-12.7889564,-74.9758403]
+  }
+  ,
+  {
+    
+    "nombre":"Huanuco",
+    "Direccion": "Jr. Bolívar Nº 337 - Huánuco",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": ["Lunes a viernes:  08:30 a 16:30h"],
+    "cor":[-9.9300891,-76.2373771]
+  }
+  
+  
+  ,{ "nombre":"ICA",
+    
+    "Direccion": "Av. Conde de Nieva Nº 446, Urb. Luren.",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-14.0742577,-75.726722]
+  }
+  
+  ,
+  { "nombre":"JUNIN SEDE HUANCAYO",
+    
+    
+    "Direccion": "Pasaje Comercial Nº 474, El Tambo",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": ["Lunes a viernes:  08:30 a 16:30h"],
+      "cor":[-12.0555583,-75.2174713] 
+    
+    }
+  ,
+  
+  { "nombre":"JUNIN SEDE MERCED",
+    
+    "Direccion": "Jr. Los Robles N° 102 – Urb. Capelo, La Merced – Chanchamayo – Junín",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": ["Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-11.0566394,-75.335091]
+    
+    
+    }
+  ,
+    { "nombre":"LA LIBERTAD",
+    
+    "Direccion": "Calle Santo Toribio de Mogrovejo Nº 518, Urb. San Andrés II etapa",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": ["Lunes a viernes: 08:30 a 16:30h"],
+      "cor":[-8.1190746,-79.0385492]
+    },
+    
+    {"nombre":"LAMBAYEQUE",
+    
+    "Direccion": "Los Tumbos Nº 245, Urb.  Santa Victoria-Chiclayo",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": ["Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-6.7801433,-79.8391614]
+    },
+    
+    {"nombre":"LORETO",
+    
+    "Direccion": "Jirón Putumayo Nº 446 - Iquitos",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-3.7483591,-73.2464882]
+    }
+    ,
+    { "nombre": "MADRE DE DIOS" ,
+    
+    "Direccion": "Jr. Piura Nº 425 Mz. 1-Y, Lote 4 - Puerto Maldonado",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-12.5934416,-69.1844138] 
+      
+      
+    }
+    ,
+    { "nombre": "MOQUEGUA" ,
+      
+    "Direccion": "Jr. Abtao Nº 614, Dpto. A - Ilo",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-17.6441395,-71.3440258]
+      
+    }
+    ,
+    { "nombre":"PASCO"  ,
+      
+    "Direccion": "Asociación Pro Vivienda UNDAC Mz. Q  Lt. 02 – Distrito de Yanacancha",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-10.6650453,-76.2539523] 
+    }
+    
+    ,
+    
+    { "nombre": "PIURA" ,
+      
+    "Direccion": "Av. Los Cocos Nº 181-183, Urb. Club Grau.",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": ["Lunes a viernes:  08:30 a 16:30h"],
+    "cor":[-5.1939525,-80.6345747]  
+    }
+    
+    ,
+        { "nombre":"MAC Piura"  ,
+      
+    "Direccion": "CC Real Plaza, (al costado de tienda Él)  - Av. Sánchez Cerro 234, Piura",
+      "Telefono": [{"numeros": [01-2247777]}],
+    "Horario": [ "Lunes a viernes: 08:30 a 16:30h"],
+    "cor":[-5.1853567,-80.6436122]
+    }
+    
+    
+    ,
+    { "nombre": "PUNO" ,
+      
+    "Direccion": "",
+      "Telefono": [],
+    "Horario": [],
+    "cor":[-15.8415918,-70.0308708] 
+    }
+    ,
+    
+    {"nombre": "SAN MARTÍN" ,
+      
+    "Direccion": "",
+      "Telefono": [],
+    "Horario": [],
+    "cor":[-6.490404,-76.362173]
+      
+    }
+    
+    ,
+    {"nombre":  "TACNA" ,
+      
+    "Direccion": "",
+      "Telefono": [],
+    "Horario": [],
+    "cor":[-18.0150714,-70.2531915]
+  
+    }
+    
+    ,
+    {"nombre": "TUMBES"  ,
+      
+    "Direccion": "",
+      "Telefono": [],
+    "Horario": [],
+    "cor":[-3.5695431,-80.4579064]  
+    }
+    ,
+    {"nombre": "UCAYALI"  ,
+      
+    "Direccion": "",
+      "Telefono": [],
+    "Horario": [],
+    "cor":[-8.3785722,-74.5375928]  
+    }
+    ,
+    
+    {"nombre": "VRAEM"  ,
+      
+    "Direccion": "",
+      "Telefono": [],
+    "Horario": [],
+      "cor":[-12.5182122,-73.8304268]   
+    }           
+]
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8.7,
+          center: {lat: -9.0036411, lng:-75.8864839}
+        });
+
+        // var geocoder = new google.maps.Geocoder();
+
+         dir.forEach(function(feature) {
+          console.log(feature);
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(feature.cor[0],feature.cor[1]),
+            icon: "/img/in.png",
+            map: map
+          });
+
+         marker.addListener('click', function () {
+        if (this.getAnimation() !== null) {
+          this.setAnimation(null);
+        } else {
+          this.setAnimation(google.maps.Animation.BOUNCE);
+          //alert("Obteniendo Datos")
+        }
+
+        llenar(feature);
+      });
+
+
+        });
+
+        // document.getElementById('submit').addEventListener('click', function() {
+        //   geocodeAddress(geocoder, map);
+        // });
+
+      }
+
+      // function geocodeAddress(geocoder, resultsMap) {
+      //   var address = document.getElementById('address').value;
+      //   geocoder.geocode({'address': address}, function(results, status) {
+      //     if (status === 'OK') {
+      //       console.log(results);
+      //       //resultsMap.setCenter(results[0].geometry.location);
+           
+      //       GMarker.pintar(results[0].geometry.location,resultsMap)
+          
+ 
+      //     } else {
+      //       alert('No se encontro ningun resultado: ' + status);
+      //     }
+      //   });
+      // }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCH5nzZKMQiRBSLUVmeB1DpujUNEowiRpE&callback=initMap">
+    </script>
+    <script type="text/javascript" src="js/GMarker.js"></script>
+  </body>
+</html>
