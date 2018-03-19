@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Geocoding service</title>
+    <title>App Mapa</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -33,7 +33,7 @@
       }
       #floating-panel1 {
         position: absolute;
-        top: 50px;
+        top: 85px;
         left: 73%;
         z-index: 5;
         background-color: rgba(255,255,255,0.8);
@@ -76,7 +76,7 @@
    }
    #floating-panel1 {
         position: absolute;
-        top: 35%;
+        top: 36%;
         left: 4%;
         max-width: 200px;
         font-size: 9px;
@@ -94,7 +94,7 @@
   </head>
   <body>
     <div id="floating-panel">
-      <img src="/img/logo.png" width="250px" height="80px"><br>
+      <img src="/img/logo.png" width="150px" height="50px"><br>
      <span>Ruc :</span>
       <input id="address" type="textbox" value="LUIS N SAENZ NRO. 360 LIMA - JESUS MARIA">
       <input id="consulta" type="button" value="Consultar"><br>
@@ -109,7 +109,7 @@
 
 
      <div id="floating-panel1" style="display: none;">
-      <img id="imgLog" src="/img/logo.png" width="290px" height="100px">
+      <img id="imgLog" src="/img/logo.png" width="240px" height="90px">
      <center><span id="nom">Sunat</span></center>
       <span id="dire">Av Chalacos</span>
       <center>
@@ -191,7 +191,7 @@ var datos={
           "url":"./img/caja-litana.jpg",
           "dire": "AV. NICOLAS DE PIEROLA  1785 - LIMA",
           "sanciones" :[
-          {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+          {"uit":9.5,"motivo":"FALTA DE IDONEIDAD"}
           ]}  ,
             "20514446980":{"color":2,
             "nombre": "TALLER DE SERVICIOS MECANICOS LUSAN GNV S.A.C - LUSAN GNV S.A.C",
@@ -261,7 +261,7 @@ var datos={
         "url":"./img/interbank.jpg",
         "dire": "AV. CARLOS VILLARAN NRO. 140  LIMA - LIMA - LA VICTORIA",
         "sanciones" :[
-        {"uit":3.5,"motivo":"FALTA DE IDONEIDAD"},{"uit":7,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
+        {"uit":2,"motivo":"LIBRO DE RECLAMACIONES - OTROS"}
         ]},
           "20100041953":{"color":1,
         "nombre": "RÍMAC SEGUROS Y REASEGUROS S.A.",
